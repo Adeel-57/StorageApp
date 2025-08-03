@@ -11,17 +11,16 @@ import {
   userRegistration,
   varifyOTP,
 } from "../controllers/userControllers.js";
-import { error } from "node:console";
 
 const router = express.Router();
 const formParser = multer();
 router.use(express.json());
 
 //users OTP send route
-router.post("/send-otp",formParser.fields(["email"]), sendOTP);
+router.post("/send-otp", formParser.fields(["email"]), sendOTP);
 
 //users OTP varify route
-router.post("/otp-verify",formParser.fields(["email", "otp"]), varifyOTP);
+router.post("/otp-verify", formParser.fields(["email", "otp"]), varifyOTP);
 
 //users registration route
 router.post("/register", formParser.single("profileImg"), userRegistration);
@@ -36,14 +35,18 @@ router.post("/logout", userLogout);
 router.post("/logoutAll/:userId", userLogoutAllDevices);
 
 //Get Allusers route
-router.get("/users", checkuser, (req, res, next)=>{
-  const user = req.user
- if (!user.userRole === "User") return next()
-  return res.status(401).json({error:"Un-authorized User"});
-}, allUsers);
+router.get(
+  "/users",
+  checkuser,
+  (req, res, next) => {
+    const user = req.user;
+    if (!user.userRole === "User") return next();
+    return res.status(401).json({ error: "Un-authorized User" });
+  },
+  allUsers
+);
 
 //user details route
 router.get("/?*", checkuser, userDetails);
-
 
 export default router;

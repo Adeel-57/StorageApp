@@ -45,10 +45,10 @@ app.use((error, req, res, next) => {
   return res
     .status(500)
     .json({ error: "Something went wrong. Please try again!" });
-    // .json(error);
+  // .json(error);
 });
 
 process.on("SIGINT", () => {
-  console.log("The End");
+  console.log("Process exited successfully");
   process.exit(0);
 });
