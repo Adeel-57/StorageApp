@@ -22,11 +22,14 @@ conectToDb(async (err) => {
 });
 
 //parsing cookies
-export const mySecretKey = "storage-demo-key-12345";
-app.use(cookieParser(mySecretKey));
+app.use(cookieParser(process.env.MYSECRETKEY));
 
 //setting cors policy
-const origins = ["http://localhost:5173", "http://localhost:3000"];
+const origins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://storage-app-front-end.vercel.app",
+];
 app.use(
   cors({
     origin: origins,

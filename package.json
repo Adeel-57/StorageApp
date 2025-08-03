@@ -2,9 +2,10 @@
   "name": "storage-app",
   "version": "1.0.0",
   "description": "A Node.js project",
+  "type": "module",
   "main": "app-inExpress.js",
   "scripts": {
-    "app": "node --watch app-inExpress.js",
+    "start": "node --watch app-inExpress.js",
     "dev": "nodemon app-inExpress.js"
   },
   "keywords": [],
