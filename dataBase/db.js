@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 import { MongoClient } from "mongodb";
-
+const dbPath = process.env.DB_PATH;
 async function conectToDb(cb) {
   try {
-    await mongoose.connect(process.env.DB_PATH);
+    await mongoose.connect(dbPath);
 
     // #*Connect to mongodb*#
     // client = await MongoClient.connect(
