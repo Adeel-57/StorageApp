@@ -14,7 +14,7 @@ const app = express();
 //Initialize dataBase conection and Middlewares
 conectToDb(async (err) => {
   if (!err) {
-    app.listen(4000);
+    app.listen(process.env.PORT);
   } else {
     await mongoose.disconnect();
     process.exit(0);
