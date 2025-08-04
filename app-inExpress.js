@@ -10,14 +10,15 @@ import filesRouter from "./routes/filesRoutes.js";
 import directoriesRouter from "./routes/directoriesRoutes.js";
 
 const app = express();
+const PORT = process.env.PORT || 4000;
+const secretKey = process.env.MYSECRETKEY;
 
 //Initialize dataBase conection and Middlewares
 conectToDb(async (err) => {
   if (!err) {
-    app.listen(
-      process.env.PORT,
-      "https://storageapp-production-e5a5.up.railway.app/"
-    );
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
   } else {
     await mongoose.disconnect();
     process.exit(0);
@@ -25,7 +26,7 @@ conectToDb(async (err) => {
 });
 
 //parsing cookies
-app.use(cookieParser(process.env.MYSECRETKEY));
+app.use(cookieParser(secretKey));
 
 //setting cors policy
 const origins = [
