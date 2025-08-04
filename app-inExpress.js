@@ -14,7 +14,10 @@ const app = express();
 //Initialize dataBase conection and Middlewares
 conectToDb(async (err) => {
   if (!err) {
-    app.listen(process.env.PORT);
+    app.listen(
+      process.env.PORT,
+      "https://storageapp-production-e5a5.up.railway.app/"
+    );
   } else {
     await mongoose.disconnect();
     process.exit(0);
