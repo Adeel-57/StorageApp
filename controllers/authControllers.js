@@ -21,11 +21,16 @@ export const googleLogin = async (req, res, next) => {
         await registeredDevices[0].deleteOne();
       }
       const newSession = await Session.create({ userId: newUser._id });
-      res.cookie("sid", newSession.id, {
-        httpOnly: true,
-        signed: true,
-        maxAge: 1000 * 60 * 60 * 24,
-      });
+      res.cookie(
+        "sid",
+        newSession.id,
+        {
+          httpOnly: true,
+          signed: true,
+          maxAge: 1000 * 60 * 60 * 24,
+        },
+        { SameSite: "none" }
+      );
       await session.commitTransaction();
       return res.status(201).json({ msg: "Registration Successfull!" });
     }
