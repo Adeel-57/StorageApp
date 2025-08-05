@@ -11,7 +11,7 @@ import directoriesRouter from "./routes/directoriesRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
-const secretKey = process.env.MYSECRETKEY;
+const { MYSECRETKEY: secretKey, DB_PATH } = process.env;
 
 //Initialize dataBase conection and Middlewares
 conectToDb(async (err) => {
@@ -20,11 +20,11 @@ conectToDb(async (err) => {
       console.log(`Server running on port ${PORT}`);
     });
   } else {
-    console.log("Connecton to db failed");
+    console.log("Connection to db failed");
     await mongoose.disconnect();
     process.exit(0);
   }
-});
+}, DB_PATH);
 
 //parsing cookies
 app.use(cookieParser(secretKey));
