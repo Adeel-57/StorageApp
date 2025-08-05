@@ -14,10 +14,10 @@ export const PostFile = async (req, res) => {
     return res.status(403).json({ error: "File could not be uploaded!" });
   const fileExtension = path.extname(fileName);
   const fileID = new ObjectId();
-  const writeStream = createWriteStream(
-    `./storage/${fileID.toString()}${fileExtension}`
-  );
-  req.pipe(writeStream);
+  // const writeStream = createWriteStream(
+  //   `./storage/${fileID.toString()}${fileExtension}`
+  // );
+  // req.pipe(writeStream);
   req.on("error", async () => {
     return await rm(`./storage/${fileID.toString()}${fileExtension}`);
   });

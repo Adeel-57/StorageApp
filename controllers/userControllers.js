@@ -8,7 +8,6 @@ import { Session } from "../models/sessionModel.js";
 import { Directory } from "../models/directoryModel.js";
 import { newUserRegistration } from "../utils/authServices.js";
 
-
 export const sendOTP = async (req, res, next) => {
   try {
     const { email } = req.body;
@@ -86,10 +85,10 @@ export const userRegistration = async (req, res, next) => {
       imageURL,
       session,
     });
-    await writeFile(
-      `./profileUploads/${imageID}${fileExtension}`,
-      req.file.buffer
-    );
+    // await writeFile(
+    //   `./profileUploads/${imageID}${fileExtension}`,
+    //   req.file.buffer
+    // );
     await session.commitTransaction();
     return res.status(201).json({ msg: "Registration successfull!" });
   } catch (error) {

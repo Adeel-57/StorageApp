@@ -42,15 +42,15 @@ app.use(
 );
 
 //request routes and user authentication
+app.use("/auth", authRouter);
+app.use("/user", userRouter);
+app.use("/directory", checkuser, directoriesRouter);
+app.use("/file", checkuser, filesRouter);
 app.use("/", (req, res, next) => {
   return res
     .status(401)
     .json({ error: "This server response only authorized API's" });
 });
-app.use("/auth", authRouter);
-app.use("/user", userRouter);
-app.use("/directory", checkuser, directoriesRouter);
-app.use("/file", checkuser, filesRouter);
 
 //globel error handler middleware
 app.use((error, req, res, next) => {
