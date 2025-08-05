@@ -12,7 +12,6 @@ import directoriesRouter from "./routes/directoriesRoutes.js";
 const app = express();
 const PORT = process.env.PORT || 4000;
 const { MYSECRETKEY: secretKey, DB_PATH } = process.env;
-console.log({ secretKey, DB_PATH });
 
 //Initialize dataBase conection and Middlewares
 conectToDb(async (err) => {
@@ -22,7 +21,6 @@ conectToDb(async (err) => {
     });
   } else {
     console.log("Connection to db failed");
-    await mongoose.disconnect();
     process.exit(0);
   }
 }, DB_PATH);
@@ -57,7 +55,8 @@ app.use((error, req, res, next) => {
   // .json(error);
 });
 
-process.on("SIGINT", () => {
+process.on("SIGINT", async () => {
+  await mongoose.disconnect();
   console.log("Process exited successfully");
   process.exit(0);
 });

@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 import { MongoClient } from "mongodb";
 
 async function conectToDb(cb, dbPath) {
-  console.log(dbPath);
   try {
+    console.log(mongoose);
     await mongoose.connect(dbPath);
     // #*Connect to mongodb*#
     // client = await MongoClient.connect(
