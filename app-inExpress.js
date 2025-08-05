@@ -12,6 +12,7 @@ import directoriesRouter from "./routes/directoriesRoutes.js";
 const app = express();
 const PORT = process.env.PORT || 4000;
 const { MYSECRETKEY: secretKey, DB_PATH } = process.env;
+console.log({ secretKey, DB_PATH });
 
 //Initialize dataBase conection and Middlewares
 conectToDb(async (err) => {
