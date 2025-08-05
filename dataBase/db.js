@@ -3,7 +3,7 @@ import { MongoClient } from "mongodb";
 
 async function conectToDb(cb, dbPath) {
   try {
-    console.log(mongoose);
+    console.log(mongoose.connect);
     await mongoose.connect(dbPath);
     // #*Connect to mongodb*#
     // client = await MongoClient.connect(
