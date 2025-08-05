@@ -20,6 +20,7 @@ conectToDb(async (err) => {
       console.log(`Server running on port ${PORT}`);
     });
   } else {
+    console.log("Connecton to db failed");
     await mongoose.disconnect();
     process.exit(0);
   }
