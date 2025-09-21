@@ -14,9 +14,10 @@ export const newUserRegistration = async (perem) => {
   await Directory.insertOne(
     {
       _id: userInserted._id,
-      name: "root",
+      name: "MyDrive",
       dirLocation: null,
       uid: userInserted._id,
+      path: [userInserted.id],
     },
     { session: perem.session }
   );

@@ -5,7 +5,6 @@ import { OTP } from "../models/otpModel.js";
 import { writeFile } from "node:fs/promises";
 import { User } from "../models/userModel.js";
 import { Session } from "../models/sessionModel.js";
-import { Directory } from "../models/directoryModel.js";
 import { newUserRegistration } from "../utils/authServices.js";
 
 export const sendOTP = async (req, res, next) => {
@@ -17,22 +16,20 @@ export const sendOTP = async (req, res, next) => {
       { otp, createdAt: new Date() },
       { upsert: true }
     );
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      auth: {
-        user: "adeeljatt557@gmail.com",
-        pass: "vxou clbm hdsi ezec",
-      },
-    });
-
-    const info = await transporter.sendMail({
-      from: '"Storage App" <adeeljatt557@gmail.com>',
-      to: `${email}`,
-      subject: "OTP",
-      // text: `An varification OTP sent at ${email}${otp}`, // plain‑text body
-      html: `<p>An varification OTP sent at ${email}</p>
-      <b>${otp}</b>`, // HTML body
-    });
+    // const transporter = nodemailer.createTransport({
+    //   host: "smtp.gmail.com",
+    //   auth: {
+    //     user: "adeeljatt557@gmail.com",
+    //     pass: "vxou clbm hdsi ezec",
+    //   },
+    // });
+    // const info = await transporter.sendMail({
+    //   from: '"Storage App" <adeeljatt557@gmail.com>',
+    //   to: `${email}`,
+    //   subject: "OTP",
+    //   html: `<p>An varification OTP sent at ${email}</p>
+    //   <b>${otp}</b>`,
+    // });
     return res
       .status(201)
       .json({ msg: `An varification OTP sent at ${email}` });
@@ -44,11 +41,11 @@ export const sendOTP = async (req, res, next) => {
 export const varifyOTP = async (req, res, next) => {
   try {
     const { email, otp } = req.body;
-    const isVarifiedEmail = await OTP.findOneAndUpdate(
+    const isEmailDocoment = await OTP.findOneAndUpdate(
       { email, otp },
       { verified: true }
     );
-    if (!isVarifiedEmail) {
+    if (!isEmailDocoment) {
       return res.status(401).json({ error: `Invalid or expired OTP` });
     } else {
       return res
@@ -69,15 +66,22 @@ export const userRegistration = async (req, res, next) => {
     if (user) {
       return res.status(409).json({ error: "Email already registered!" });
     }
-    const isVarifiedEmail = await OTP.findOne({ email });
-    if (!isVarifiedEmail || !isVarifiedEmail.verified) {
+    const isEmailDocument = await OTP.findOne({ email });
+    if (!isEmailDocument || !isEmailDocument.verified) {
       return res
         .status(401)
         .json({ error: `Please enter a verfied email address` });
     }
-    const fileExtension = path.extname(req.file.originalname);
-    const imageID = crypto.randomUUID();
-    const imageURL = `http://localhost:4000/file/profile/${imageID}${fileExtension}`;
+    let imageURL = "";
+    if (req.file) {
+      const imageID = crypto.randomUUID();
+      const fileExtension = path.extname(req?.file?.originalname);
+      imageURL = `http://localhost:4000/file/profile/${imageID}${fileExtension}`;
+      await writeFile(
+        `./profileUploads/${imageID}${fileExtension}`,
+        req.file.buffer
+      );
+    }
     await newUserRegistration({
       email,
       name,
@@ -85,10 +89,6 @@ export const userRegistration = async (req, res, next) => {
       imageURL,
       session,
     });
-    // await writeFile(
-    //   `./profileUploads/${imageID}${fileExtension}`,
-    //   req.file.buffer
-    // );
     await session.commitTransaction();
     return res.status(201).json({ msg: "Registration successfull!" });
   } catch (error) {
@@ -144,10 +144,12 @@ export const userLogoutAllDevices = async (req, res, next) => {
 };
 
 export const userDetails = async (req, res) => {
-  const { name, email, profileImg } = await User.findOne({
+  const { _id, name, email, profileImg, storagePlan } = await User.findOne({
     _id: req.user._id,
   }).lean();
-  return res.status(200).json({ name, email, imageURL: profileImg });
+  return res
+    .status(200)
+    .json({ name, email, imageURL: profileImg, storagePlan });
 };
 
 export const allUsers = async (req, res) => {

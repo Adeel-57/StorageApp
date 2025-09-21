@@ -13,15 +13,20 @@ const userSchema = new Schema(
       required: true,
     },
     password: {
-      type: String
+      type: String,
     },
     profileImg: {
-      type: String
+      type: String,
     },
-    userRole:{
-      type:String,
-      enum:['User','Manager','Admin'],
-      default:'User',
+    userRole: {
+      type: String,
+      enum: ["User", "Manager", "Admin"],
+      default: "User",
+    },
+    storagePlan: {
+      type: String,
+      enum: ["Free", "Basic", "Premium"],
+      default: "Free",
     },
   },
   {

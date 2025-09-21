@@ -8,7 +8,7 @@ const sessionSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-    expires: 3600,
+    expires: 60 * 60 * 24, // 1 day
   },
 });
 

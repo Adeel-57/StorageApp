@@ -5,11 +5,12 @@ import {
   ReadDirectory,
   UpdateDirectory,
 } from "../controllers/directoryController.js";
+import { checkStorageLimit } from "../utils/userAuth.js";
 
 const router = express.Router();
 
 //Create Directories
-router.post("/?*", CreateDirectory);
+router.post("/?*", checkStorageLimit, CreateDirectory);
 
 //Read Directories
 router.get("/?*", ReadDirectory);
