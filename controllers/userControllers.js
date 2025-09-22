@@ -73,15 +73,15 @@ export const userRegistration = async (req, res, next) => {
         .json({ error: `Please enter a verfied email address` });
     }
     let imageURL = "";
-    if (req.file) {
-      const imageID = crypto.randomUUID();
-      const fileExtension = path.extname(req?.file?.originalname);
-      imageURL = `http://localhost:4000/file/profile/${imageID}${fileExtension}`;
-      await writeFile(
-        `./profileUploads/${imageID}${fileExtension}`,
-        req.file.buffer
-      );
-    }
+    // if (req.file) {
+    //   const imageID = crypto.randomUUID();
+    //   const fileExtension = path.extname(req?.file?.originalname);
+    //   imageURL = `http://localhost:4000/file/profile/${imageID}${fileExtension}`;
+    //   await writeFile(
+    //     `./profileUploads/${imageID}${fileExtension}`,
+    //     req.file.buffer
+    //   );
+    // }
     await newUserRegistration({
       email,
       name,
