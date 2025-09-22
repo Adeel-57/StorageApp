@@ -41,23 +41,23 @@ const userSpeedLimiter = slowDown({
 });
 
 // Initialize database connection and middlewares
-let connection = false;
-app.use((req, res, next) => {
-  if (!connection) {
-    conectToDb(async (err) => {
-      if (!err) {
-        connection = true;
-        // app.listen(PORT, () => {
-        //   console.log(`Server running on port ${PORT}`);
-        // });
-      } else {
-        console.log("Connection to db failed");
-        process.exit(0);
-      }
-    }, DB_PATH);
-  }
-  next();
-});
+// let connection = false;
+// app.use((req, res, next) => {
+//   if (!connection) {
+//     conectToDb(async (err) => {
+//       if (!err) {
+//         connection = true;
+//         // app.listen(PORT, () => {
+//         //   console.log(`Server running on port ${PORT}`);
+//         // });
+//       } else {
+//         console.log("Connection to db failed");
+//         process.exit(0);
+//       }
+//     }, DB_PATH);
+//   }
+//   next();
+// });
 
 // Use helmet for security headers
 // app.use(helmet());
@@ -88,11 +88,11 @@ app.use("/auth", authRouter);
 app.use("/user", userSpeedLimiter, userRouter);
 app.use("/directory", checkuser, directoriesRouter);
 app.use("/file", checkuser, filesRouter);
-// app.use("/", (req, res) => {
-//   return res
-//     .status(401)
-//     .json({ error: "This server responds only to authorized APIs" });
-// });
+app.use("/", (req, res) => {
+  return res
+    .status(401)
+    .json({ error: "This server responds only to authorized APIs" });
+});
 
 // Global error handler middleware
 app.use((error, req, res, next) => {
