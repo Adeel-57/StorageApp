@@ -7,6 +7,7 @@
   "scripts": {
     "app": "node --watch --env-file=.env app.js",
     "start": "node --trace-warnings app.js",
+    "vercel-start": "node app.js",
     "dev": "nodemon app.js"
   },
   "keywords": [],
