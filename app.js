@@ -12,6 +12,7 @@ import userRouter from "./routes/userRoutes.js";
 import filesRouter from "./routes/filesRoutes.js";
 import directoriesRouter from "./routes/directoriesRoutes.js";
 import serverless from "serverless-http";
+import ServerlessHttp from "serverless-http";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -111,4 +112,4 @@ const shutdown = async () => {
 process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
 
-export default serverless(app);
+export default ServerlessHttp(app);
