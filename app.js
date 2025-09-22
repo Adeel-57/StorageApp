@@ -40,16 +40,22 @@ const userSpeedLimiter = slowDown({
 });
 
 // Initialize database connection and middlewares
-conectToDb(async (err) => {
-  if (!err) {
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-  } else {
-    console.log("Connection to db failed");
-    process.exit(0);
-  }
-}, DB_PATH);
+let connection = false;
+app.use((req, res, next) => {
+  if(!connection){
+  conectToDb(async (err) => {
+    if (!err) {
+      connection = true;
+      app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+      });
+    } else {
+      console.log("Connection to db failed");
+      process.exit(0);
+    }
+  }, DB_PATH)};
+  next();
+})
 
 // Use helmet for security headers
 // app.use(helmet());
@@ -102,3 +108,5 @@ const shutdown = async () => {
 
 process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
+
+module.exports = app;
