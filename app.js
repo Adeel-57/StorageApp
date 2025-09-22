@@ -11,6 +11,7 @@ import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import filesRouter from "./routes/filesRoutes.js";
 import directoriesRouter from "./routes/directoriesRoutes.js";
+import serverless from "serverless-http";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -42,20 +43,21 @@ const userSpeedLimiter = slowDown({
 // Initialize database connection and middlewares
 let connection = false;
 app.use((req, res, next) => {
-  if(!connection){
-  conectToDb(async (err) => {
-    if (!err) {
-      connection = true;
-      // app.listen(PORT, () => {
-      //   console.log(`Server running on port ${PORT}`);
-      // });
-    } else {
-      console.log("Connection to db failed");
-      process.exit(0);
-    }
-  }, DB_PATH)};
+  if (!connection) {
+    conectToDb(async (err) => {
+      if (!err) {
+        connection = true;
+        // app.listen(PORT, () => {
+        //   console.log(`Server running on port ${PORT}`);
+        // });
+      } else {
+        console.log("Connection to db failed");
+        process.exit(0);
+      }
+    }, DB_PATH);
+  }
   next();
-})
+});
 
 // Use helmet for security headers
 // app.use(helmet());
@@ -109,4 +111,4 @@ const shutdown = async () => {
 process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
 
-export default app;
+export default serverless(app);
