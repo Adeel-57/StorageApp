@@ -6,7 +6,7 @@
   "main": "app.js",
   "scripts": {
     "app": "node --watch --env-file=.env app.js",
-    "start": "node app",
+    "start": "node app.js",
     "vercel-start": "node app",
     "dev": "nodemon app.js"
   },
