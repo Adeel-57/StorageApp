@@ -71,17 +71,17 @@ app.use(cookieParser(secretKey));
 // });
 
 // Setting cors policy
-const origins = [
-  "http://localhost:5173",
-  "http://localhost:3000",
-  "https://storage-app-front-end.vercel.app",
-];
-app.use(
-  cors({
-    origin: origins,
-    credentials: true,
-  })
-);
+// const origins = [
+//   "http://localhost:5173",
+//   "http://localhost:3000",
+//   "https://storage-app-front-end.vercel.app",
+// ];
+// app.use(
+//   cors({
+//     origin: origins,
+//     credentials: true,
+//   })
+// );
 
 // Request routes and user authentication
 app.use("/auth", authRouter);
