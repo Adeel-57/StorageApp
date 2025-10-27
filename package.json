@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A Node.js project",
   "type": "module",
-  "main": "app.js",
+  "main": "api/app.js",
   "scripts": {
     "app": "node --watch --env-file=.env app.js",
     "start": "node app.js",
@@ -26,7 +26,7 @@
     "mongoose": "^8.17.0",
     "multer": "^2.0.2",
     "nodemailer": "^7.0.5",
-    "serverless-http": "^4.0.0"
+    "serverless-http": "^3.2.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.23",

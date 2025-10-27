@@ -5,13 +5,12 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import slowDown from "express-slow-down";
 import rateLimit from "express-rate-limit";
-import checkuser from "./utils/userAuth.js";
-import { conectToDb } from "./controllers/dataBase/db.js";
-import authRouter from "./routes/authRoutes.js";
-import userRouter from "./routes/userRoutes.js";
-import filesRouter from "./routes/filesRoutes.js";
-import directoriesRouter from "./routes/directoriesRoutes.js";
-import serverless from "serverless-http";
+import checkuser from "../utils/userAuth.js";
+import { conectToDb } from "../dataBase/db.js";
+import authRouter from "../routes/authRoutes.js";
+import userRouter from "../routes/userRoutes.js";
+import filesRouter from "../routes/filesRoutes.js";
+import directoriesRouter from "../routes/directoriesRoutes.js";
 import ServerlessHttp from "serverless-http";
 
 const app = express();
@@ -42,23 +41,28 @@ const userSpeedLimiter = slowDown({
 });
 
 // Initialize database connection and middlewares
-// let connection = false;
-// app.use((req, res, next) => {
-//   if (!connection) {
-//     conectToDb(async (err) => {
-//       if (!err) {
-//         connection = true;
-//         // app.listen(PORT, () => {
-//         //   console.log(`Server running on port ${PORT}`);
-//         // });
-//       } else {
-//         console.log("Connection to db failed");
-//         process.exit(0);
-//       }
-//     }, DB_PATH);
+// conectToDb(async (err) => {
+//   if (!err) {
+//     connection = true;
+//     // app.listen(PORT, () => {
+//     //   console.log(`Server running on port ${PORT}`);
+//     // });
+//   } else {
+//     console.log("Connection to db failed");
+//     process.exit(0);
 //   }
-//   next();
-// });
+// }, DB_PATH);
+
+// Connect to MongoDB (ensure singleton connection in serverless)
+if (mongoose.connection.readyState === 0) {
+  conectToDb((error) => {
+    if (error) {
+      console.error("❌ Database connection error:", error);
+    } else {
+      console.log("✅ MongoDB connected");
+    }
+  }, DB_PATH);
+}
 
 // Use helmet for security headers
 // app.use(helmet());
@@ -72,17 +76,17 @@ app.use(cookieParser(secretKey));
 // });
 
 // Setting cors policy
-// const origins = [
-//   "http://localhost:5173",
-//   "http://localhost:3000",
-//   "https://storage-app-front-end.vercel.app",
-// ];
-// app.use(
-//   cors({
-//     origin: origins,
-//     credentials: true,
-//   })
-// );
+const origins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://storage-app-front-end.vercel.app",
+];
+app.use(
+  cors({
+    origin: origins,
+    credentials: true,
+  })
+);
 
 // Request routes and user authentication
 app.use("/auth", authRouter);
@@ -112,4 +116,6 @@ const shutdown = async () => {
 process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
 
-export default ServerlessHttp(app);
+// Export for Vercel (no HTTPS, no listen)
+export const handler = ServerlessHttp(app);
+export default app;
