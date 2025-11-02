@@ -93,11 +93,10 @@ app.use("/auth", authRouter);
 app.use("/user", userSpeedLimiter, userRouter);
 app.use("/directory", checkuser, directoriesRouter);
 app.use("/file", checkuser, filesRouter);
-app.use("/", (req, res) => {
-  return res
-    .status(401)
-    .json({ error: "This server responds only to authorized APIs" });
+app.get("/", (req, res) => {
+  res.json({ message: "🚀 API running successfully!" });
 });
+
 
 // Global error handler middleware
 app.use((error, req, res, next) => {
