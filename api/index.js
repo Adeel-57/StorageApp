@@ -11,7 +11,7 @@ import authRouter from "../routes/authRoutes.js";
 import userRouter from "../routes/userRoutes.js";
 import filesRouter from "../routes/filesRoutes.js";
 import directoriesRouter from "../routes/directoriesRoutes.js";
-import ServerlessHttp from "serverless-http";
+import serverless from "serverless-http";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -117,5 +117,5 @@ process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
 
 // Export for Vercel (no HTTPS, no listen)
-export const handler = ServerlessHttp(app);
+export const handler = serverless(app);
 export default app;
