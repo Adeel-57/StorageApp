@@ -18,7 +18,7 @@ let isConnected = false;
 async function conectToDb(callback, dbPath) {
   if (isConnected) {
     console.log("🔁 Using existing MongoDB connection");
-    return callback?.(null);
+    return callback(null);
   }
 
   try {
@@ -29,10 +29,10 @@ async function conectToDb(callback, dbPath) {
     isConnected = db.connections[0].readyState === 1;
     console.log("✅ Connected to MongoDB successfully.");
 
-    callback?.(null);
+    callback(null);
   } catch (error) {
     console.error("❌ MongoDB connection error:", error);
-    callback?.(error);
+    callback(error);
   }
 }
 
