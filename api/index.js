@@ -93,7 +93,7 @@ app.use("/auth", authRouter);
 app.use("/user", userSpeedLimiter, userRouter);
 app.use("/directory", checkuser, directoriesRouter);
 app.use("/file", checkuser, filesRouter);
-app.get("/", (req, res) => {
+app.use("/", (req, res) => {
   res.json({ message: "🚀 API running successfully!" });
 });
 
