@@ -116,5 +116,5 @@ process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
 
 // Export for Vercel (no HTTPS, no listen)
-export const handler = serverless(app);
+//export const handler = serverless(app);
 export default app;
