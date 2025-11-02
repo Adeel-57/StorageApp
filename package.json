@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "A Node.js project",
   "type": "module",
-  "main": "api/app.js",
+  "main": "api/index.js",
   "scripts": {
-    "app": "node --watch --env-file=.env app.js",
-    "start": "node api/app.js",
-    "vercel-start": "node api/app.js",
-    "dev": "nodemon app.js"
+    "app": "node --watch --env-file=.env index.js",
+    "start": "node api/index.js",
+    "vercel-start": "node api/index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "Adeel",
